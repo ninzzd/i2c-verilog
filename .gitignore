@@ -1,0 +1,22 @@
+# Ignore Vivado generated folders
+*.cache/
+*.hw/
+*.runs/
+*.gen/
+*.sim/
+.ip_user_files/
+*.Xil/
+*.jou
+*.log
+*.str
+*.bit
+*.bin
+*.ltx
+*.dcp
+*.tmp
+
+# Vivado database and garbage
+*.backup*
+__pycache__/
+*.swp
+*.zip

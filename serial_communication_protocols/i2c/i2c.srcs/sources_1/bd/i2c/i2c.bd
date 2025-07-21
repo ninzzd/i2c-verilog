@@ -1,0 +1,14 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xA4B379D77B4221E4",
+      "device": "xc7z020clg400-1",
+      "gen_directory": "../../../../i2c.gen/sources_1/bd/i2c",
+      "name": "i2c",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2022.2"
+    },
+    "design_tree": {}
+  }
+}
