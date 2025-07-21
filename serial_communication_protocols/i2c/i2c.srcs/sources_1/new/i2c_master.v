@@ -40,10 +40,11 @@ module i2c_master(
     reg r_w;
     initial
     begin
-        state = 0;
-        cl = 1;
-        dl = 1;
-        counter = 0;
+        state <= 0;
+        cl <= 1;
+        dl <= 1;
+        counter <= 0;
+        on <= 0;
     end  
     always @(negedge clk)
     begin
@@ -57,6 +58,7 @@ module i2c_master(
                         data[7:0] <= data_to_send;
                     r_w <= rw;
                     slave_address[6:0] <= slave_addr;
+                    dl <= 0;
                     on <= 1;
                 end 
             end
@@ -303,7 +305,7 @@ module i2c_master(
         if(on)
             cl <= ~cl;
     end
-    assign SCL = (on == 1?(dl == 0?1'b0:1'bz):1'bz); 
-    assign SDA = (on == 1?(cl == 0?1'b0:1'bz):1'bz); 
+    assign SCL = (on == 1?(cl == 0?1'b0:1'bz):1'bz); 
+    assign SDA = (on == 1?(dl == 0?1'b0:1'bz):1'bz); 
     
 endmodule
