@@ -9,6 +9,54 @@
       "synth_flow_mode": "Hierarchical",
       "tool_version": "2022.2"
     },
-    "design_tree": {}
+    "design_tree": {
+      "i2c_master_0": ""
+    },
+    "components": {
+      "i2c_master_0": {
+        "vlnv": "xilinx.com:module_ref:i2c_master:1.0",
+        "xci_name": "i2c_i2c_master_0_1",
+        "xci_path": "ip/i2c_i2c_master_0_1/i2c_i2c_master_0_1.xci",
+        "inst_hier_path": "i2c_master_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "i2c_master",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "slave_addr": {
+            "direction": "I",
+            "left": "6",
+            "right": "0"
+          },
+          "data_to_send": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "rw": {
+            "direction": "I"
+          },
+          "start": {
+            "direction": "I"
+          },
+          "clk": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "received_data": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "SDA": {
+            "direction": "IO"
+          },
+          "SCL": {
+            "direction": "IO"
+          }
+        }
+      }
+    }
   }
 }

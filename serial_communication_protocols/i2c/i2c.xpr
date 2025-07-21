@@ -47,6 +47,7 @@
     <Option Name="ActiveSimSet" Val="i2c_sims"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
+    <Option Name="IPOutputRepo" Val="$PCACHEDIR/ip"/>
     <Option Name="IPDefaultOutputPath" Val="$PGENDIR/sources_1"/>
     <Option Name="IPCachePermission" Val="read"/>
     <Option Name="IPCachePermission" Val="write"/>
@@ -121,6 +122,8 @@
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="i2c_master"/>
+        <Option Name="TopLib" Val="xil_defaultlib"/>
+        <Option Name="TopRTLFile" Val="$PSRCDIR/sources_1/new/i2c_master.v"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
@@ -136,6 +139,7 @@
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="i2c_master"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
+        <Option Name="TopRTLFile" Val="$PSRCDIR/sources_1/new/i2c_master.v"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
@@ -157,7 +161,6 @@
       <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/i2c_sims/new/i2c_master_tb.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../../../../Vivado_Projects/hardware_level_communication_protocols/hardware_level_communication_protocols.srcs/i2c_sims/new/i2c_master_tb.v"/>
           <Attr Name="ImportTime" Val="1753044075"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -167,7 +170,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="i2c_master"/>
+        <Option Name="TopModule" Val="i2c_master_tb"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="TransportPathDelay" Val="0"/>

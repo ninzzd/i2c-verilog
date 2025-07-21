@@ -53,7 +53,8 @@ module i2c_master(
                 if(start == 1)
                 begin
                     state <= 4'b0001;
-                    data[7:0] <= data_to_send;
+                    if(rw == 0)
+                        data[7:0] <= data_to_send;
                     r_w <= rw;
                     slave_address[6:0] <= slave_addr;
                     on <= 1;
@@ -160,7 +161,10 @@ module i2c_master(
                     // End of wait for ACK/NACK
                     // Start of Data Bit 7
                     state <= 4'b1011;
-                    dl <= data[7];
+                    if(r_w == 0)
+                        dl <= data[7];
+                    else 
+                        data[7] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -171,7 +175,10 @@ module i2c_master(
                     // End of Data Bit 7
                     // Start of Data Bit 6
                     state <= 4'b1100;
-                    dl <= data[6];
+                    if(r_w == 0)
+                        dl <= data[6];
+                    else 
+                        data[6] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -182,7 +189,10 @@ module i2c_master(
                     // End of Data Bit 6
                     // Start of Data Bit 5
                     state <= 4'b1101;
-                    dl <= data[5];
+                    if(r_w == 0)
+                        dl <= data[5];
+                    else 
+                        data[5] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -193,7 +203,10 @@ module i2c_master(
                     // End of Data Bit 5
                     // Start of Data Bit 4
                     state <= 4'b1110;
-                    dl <= data[4];
+                    if(r_w == 0)
+                        dl <= data[4];
+                    else 
+                        data[4] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -204,7 +217,10 @@ module i2c_master(
                     // End of Data Bit 4
                     // Start of Data Bit 3
                     state <= 4'b1111;
-                    dl <= data[3];
+                    if(r_w == 0)
+                        dl <= data[3];
+                    else 
+                        data[3] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -215,7 +231,10 @@ module i2c_master(
                     // End of Data Bit 3
                     // Start of Data Bit 2
                     state <= 5'b10000;
-                    dl <= data[2];
+                    if(r_w == 0)
+                        dl <= data[2];
+                    else 
+                        data[2] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -226,7 +245,10 @@ module i2c_master(
                     // End of Data Bit 2
                     // Start of Data Bit 1
                     state <= 5'b10001;
-                    dl <= data[1];
+                    if(r_w == 0)
+                        dl <= data[1];
+                    else 
+                        data[1] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -237,7 +259,10 @@ module i2c_master(
                     // End of Data Bit 1
                     // Start of Data Bit 0
                     state <= 5'b10010;
-                    dl <= data[0];
+                    if(r_w == 0)
+                        dl <= data[0];
+                    else 
+                        data[0] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -246,9 +271,12 @@ module i2c_master(
                 if(counter == 1)
                 begin
                     // End of Data Bit 0
-                    // Waiting for ACK/NACK
+                    // Waiting/Sending for ACK/NACK
                     state <= 5'b10011;
-                    dl <= 1;
+                    if(r_w == 0)
+                        dl <= 1;
+                    else 
+                        dl <= 0;
                 end
                 counter <= ~counter;
             end
@@ -275,7 +303,7 @@ module i2c_master(
         if(on)
             cl <= ~cl;
     end
-    assign SCL = ~on&1'bz | on&cl&1'bz; 
-    assign SDA = ~on&1'bz | on&dl&1'bz;
+    assign SCL = (on == 1?(dl == 0?1'b0:1'bz):1'bz); 
+    assign SDA = (on == 1?(cl == 0?1'b0:1'bz):1'bz); 
     
 endmodule

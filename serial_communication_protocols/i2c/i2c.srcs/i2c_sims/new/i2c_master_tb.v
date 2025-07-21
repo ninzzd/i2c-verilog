@@ -23,5 +23,5 @@
 module i2c_master_tb(
 
     );
-    
+    i2c_master uut();
 endmodule
