@@ -21,11 +21,20 @@
 
 
 module i2c_slave(
-        output[7:0] received_data,
+        output reg[7:0] received_data,
         inout SDA,
         inout SCL
     );
     wire [6:0] self_addr;
+    reg [3:0] state;
     assign self_addr = 7'b0000001;
+    initial
+    begin
+        state <= 0;
+    end
+    always @(*)
+    begin
+    
+    end 
     
 endmodule
