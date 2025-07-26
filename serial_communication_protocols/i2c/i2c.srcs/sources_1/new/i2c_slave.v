@@ -32,14 +32,15 @@ module i2c_slave(
     reg on;
     reg dl;
     reg rw;
+    reg counter;
 //    reg counter;
     assign self_addr = 7'b0000001;
     initial
     begin
-//        counter <= 0;
+        counter <= 0;
         rw <= 0;
         data <= 0;
-        addr <= 7'bzzzzzzz;
+        addr <= 0;
         state <= 0;
         dl <= 1;
         on <= 0;
@@ -49,32 +50,19 @@ module i2c_slave(
         if(on == 0 && SCL == 1)
             on <= 1;
     end
-    always @(negedge SCL)
+    always @(posedge SCL)
     begin
         if(on)
         begin
             case(state)
-            4'b1000:
-            begin
-                dl <= 0;
-                state <= 4'b1001;
-            end
             4'b1001:
             begin
-                dl <= 1;
+                dl <= 0;
                 state <= 4'b1010;
             end
-            5'b10011:
+            5'b10001:
             begin
-                dl <= 0;
-                state <= 5'b10100;
-            end
-            5'b10100:
-            begin
-                dl <= 1;
-                received_data <= data;
-                on <= 0;
-                state <= 0;
+                
             end
             endcase
         end
@@ -116,103 +104,24 @@ module i2c_slave(
             end
             4'b0110:
             begin
-                rw <= SDA;
+                addr[0] <= SDA;
                 state <= 4'b0111;
             end
-            4'b0111:
+            4'b1000:
             begin
-                addr[0] <= SDA;
                 if(addr == self_addr)
-                    state <= 4'b1000;
-                else on <= 0;
-            end
-            4'b1010:
-            begin
-                if(rw == 0)
                 begin
-                    data[7] <= SDA;
-                end
-                else dl <= data[7];
-                state <= 4'b1011;
-            end
-            4'b1011:
-            begin
-                if(rw == 0)
-                begin
-                    data[6] <= SDA;
-                end
-                else dl <= data[6];
-                state <= 4'b1100;
-            end
-            4'b1100:
-            begin
-                if(rw == 0)
-                begin
-                    data[5] <= SDA;
-                end
-                else dl <= data[5];
-                state <= 4'b1101;
-            end
-            4'b1101:
-            begin
-                if(rw == 0)
-                begin
-                    data[4] <= SDA;
-                end
-                else dl <= data[4];
-                state <= 4'b1110;
-            end
-            4'b1110:
-            begin
-                if(rw == 0)
-                begin
-                    data[3] <= SDA;
-                end
-                else dl <= data[3];
-                state <= 4'b1111;
-            end
-            4'b1111:
-            begin
-                if(rw == 0)
-                begin
-                    data[2] <= SDA;
-                end
-                else dl <= data[2];
-                state <= 5'b10000;
-            end
-            5'b10000:
-            begin
-                if(rw == 0)
-                begin
-                    data[1] <= SDA;
-                end
-                else dl <= data[1];
-                state <= 5'b10001;
-            end
-            5'b10001:
-            begin
-                if(rw == 0)
-                begin
-                    data[0] <= SDA;
-                end
-                else dl <= data[0];
-                state <= 5'b10010;
-            end
-            5'b10010:
-            begin
-                if(rw == 0)
-                begin
-                    state <= 5'b10011;
+                    rw <= SDA;
+                    state <= 4'b1001;
                 end
                 else
                 begin
-                    if(SDA <= 0)
-                    begin
-                        on <= 0;
-                        state <= 0;
-                    end
+                    on <= 0;
+                    state <= 0;
+                    addr <= 0;
                 end
             end
+            
             endcase
         end
     end
