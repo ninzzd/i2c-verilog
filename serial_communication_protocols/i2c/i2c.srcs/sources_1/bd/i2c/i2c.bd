@@ -10,10 +10,34 @@
       "tool_version": "2022.2"
     },
     "design_tree": {
-      "i2c_master_0": "",
-      "i2c_slave_0": ""
+      "i2c_slave_0": "",
+      "i2c_master_0": ""
     },
     "components": {
+      "i2c_slave_0": {
+        "vlnv": "xilinx.com:module_ref:i2c_slave:1.0",
+        "xci_name": "i2c_i2c_slave_0_0",
+        "xci_path": "ip/i2c_i2c_slave_0_0/i2c_i2c_slave_0_0.xci",
+        "inst_hier_path": "i2c_slave_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "i2c_slave",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "received_data": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "SDA": {
+            "direction": "IO"
+          },
+          "SCL": {
+            "direction": "IO"
+          }
+        }
+      },
       "i2c_master_0": {
         "vlnv": "xilinx.com:module_ref:i2c_master:1.0",
         "xci_name": "i2c_i2c_master_0_1",
@@ -57,43 +81,19 @@
             "direction": "IO"
           }
         }
-      },
-      "i2c_slave_0": {
-        "vlnv": "xilinx.com:module_ref:i2c_slave:1.0",
-        "xci_name": "i2c_i2c_slave_0_0",
-        "xci_path": "ip/i2c_i2c_slave_0_0/i2c_i2c_slave_0_0.xci",
-        "inst_hier_path": "i2c_slave_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "i2c_slave",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "received_data": {
-            "direction": "O",
-            "left": "7",
-            "right": "0"
-          },
-          "SDA": {
-            "direction": "IO"
-          },
-          "SCL": {
-            "direction": "IO"
-          }
-        }
       }
     },
     "nets": {
       "Net": {
         "ports": [
-          "i2c_master_0/SDA",
-          "i2c_slave_0/SDA"
+          "i2c_slave_0/SDA",
+          "i2c_master_0/SDA"
         ]
       },
       "Net1": {
         "ports": [
-          "i2c_master_0/SCL",
-          "i2c_slave_0/SCL"
+          "i2c_slave_0/SCL",
+          "i2c_master_0/SCL"
         ]
       }
     }

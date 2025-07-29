@@ -37,6 +37,7 @@ module i2c_master(
     reg dl;
     reg cl;
     reg on;
+    reg bind;
     reg r_w;
     initial
     begin
@@ -45,6 +46,7 @@ module i2c_master(
         dl <= 1;
         counter <= 0;
         on <= 0;
+        bind <= 0;
     end  
     always @(negedge clk)
     begin
@@ -158,10 +160,14 @@ module i2c_master(
             end
             4'b1010:
             begin
-                if(counter == 1 & SDA == 0)
+                if(counter == 0 & SDA == 0)
                 begin
                     // End of wait for ACK/NACK
                     // Start of Data Bit 7
+                    bind <= 1;
+                end
+                if(counter == 1 && bind == 1)
+                begin
                     state <= 4'b1011;
                     if(r_w == 0)
                         dl <= data[7];
@@ -284,9 +290,13 @@ module i2c_master(
             end
             5'b10011:
             begin
-                if(counter == 1 && SDA == 0)
+                if(counter == 0 && SDA == 0)
                 begin
-                    // End of Wait for ACK/NACK
+                    // Sensing ACK/NACK bit
+                    bind <= 0;
+                end
+                if(counter == 1 && bind == 0)
+                begin
                     // Start of Stop Bit Sequence
                     state <= 5'b10100;
                     dl <= 0;
