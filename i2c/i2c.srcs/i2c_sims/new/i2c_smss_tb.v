@@ -42,13 +42,20 @@ module i2c_smss_tb(
     begin
         m_clk <= 0;
         
+        // Master to Slave Data Transfer
+//        #10
+//        m_slave_addr <= 7'b0000001;
+//        m_rw <= 0;
+//        m_data_to_send <= 8'b01001110;
+
+        //Slave to Master Data Transfer
         #10
         m_slave_addr <= 7'b0000001;
-        m_rw <= 0;
-        m_data_to_send <= 8'b01001110;
+        m_rw <= 1;
+        
+        // Common start signal pulse to master
         m_start <= 1;
         #5
         m_start <= 0;
-        
     end
 endmodule

@@ -40,6 +40,7 @@ module i2c_slave(
         potential_on <= 0;
         counter <= 0;
         dl <= 1;
+        data <= 8'b01001111;
     end
     always @(negedge SDA)
     begin
