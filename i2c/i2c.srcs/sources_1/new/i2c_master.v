@@ -152,7 +152,7 @@ module i2c_master(
                 if(counter == 1)
                 begin
                     // End of R/W Bit
-                    // Waiting for ACK/NACK
+                    // Start of Slave-Driven Address ACK/NACK Bit
                     state <= 4'b1010;
                     dl <= 1;
                 end
@@ -162,17 +162,17 @@ module i2c_master(
             begin
                 if(counter == 0 & SDA == 0)
                 begin
-                    // End of wait for ACK/NACK
-                    // Start of Data Bit 7
+                    //Midpoint of Slave-Driven Address ACK/NACK Bit 
                     bind <= 1;
                 end
                 if(counter == 1 && bind == 1)
                 begin
+                    // End of Slave-Driven ACK/NACK Bit
+                    // Start of Data Bit 7
                     state <= 4'b1011;
                     if(r_w == 0)
                         dl <= data[7];
-                    else 
-                        data[7] <= SDA;
+                        
                 end
                 counter <= ~counter;
             end
@@ -185,8 +185,11 @@ module i2c_master(
                     state <= 4'b1100;
                     if(r_w == 0)
                         dl <= data[6];
-                    else 
-                        data[6] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[7] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -199,8 +202,11 @@ module i2c_master(
                     state <= 4'b1101;
                     if(r_w == 0)
                         dl <= data[5];
-                    else 
-                        data[5] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[6] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -213,8 +219,11 @@ module i2c_master(
                     state <= 4'b1110;
                     if(r_w == 0)
                         dl <= data[4];
-                    else 
-                        data[4] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[5] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -227,8 +236,11 @@ module i2c_master(
                     state <= 4'b1111;
                     if(r_w == 0)
                         dl <= data[3];
-                    else 
-                        data[3] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[4] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -241,8 +253,11 @@ module i2c_master(
                     state <= 5'b10000;
                     if(r_w == 0)
                         dl <= data[2];
-                    else 
-                        data[2] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[3] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -255,8 +270,11 @@ module i2c_master(
                     state <= 5'b10001;
                     if(r_w == 0)
                         dl <= data[1];
-                    else 
-                        data[1] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[2] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -269,8 +287,11 @@ module i2c_master(
                     state <= 5'b10010;
                     if(r_w == 0)
                         dl <= data[0];
-                    else 
-                        data[0] <= SDA;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[1] <= SDA;
                 end
                 counter <= ~counter;
             end
@@ -279,32 +300,47 @@ module i2c_master(
                 if(counter == 1)
                 begin
                     // End of Data Bit 0
-                    // Waiting/Sending for ACK/NACK
+                    // Start of Data ACK/NACK Bit
                     state <= 5'b10011;
-                    if(r_w == 0)
-                        dl <= 1;
-                    else 
-                        dl <= 0;
+                    dl <= 1;
+                end
+                else
+                begin
+                    if(r_w == 1)
+                        data[0] <= SDA;
                 end
                 counter <= ~counter;
             end
             5'b10011:
             begin
-                if(counter == 0 && SDA == 0)
+                if(r_w == 0)
                 begin
-                    // Sensing ACK/NACK bit
-                    bind <= 0;
+                    if(counter == 0 && SDA == 0)
+                    begin
+                        // Sensing ACK/NACK bit
+                        bind <= 0;
+                    end
+                    if(counter == 1 && bind == 0)
+                    begin
+                        // Start of Stop Bit Sequence
+                        state <= 5'b10100;
+                        dl <= 0;
+                    end
                 end
-                if(counter == 1 && bind == 0)
+                else
                 begin
-                    // Start of Stop Bit Sequence
-                    state <= 5'b10100;
-                    dl <= 0;
+                    if(counter == 1)
+                    begin
+                        state <= 5'b10100;
+                        dl <= 0;
+                    end
                 end
                 counter <= ~counter;
             end
             5'b10100:
             begin
+                if(rw == 1)
+                    received_data <= data;
                 state <= 5'b00000;
                 on <= 0;
             end
